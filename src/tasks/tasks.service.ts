@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
@@ -8,28 +8,28 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task)
-    private tasksRepository: Repository<Task>,
+    @InjectRepository(Task) // Injeta o repositório Task
+    private taskRepository: Repository<Task>,
   ) {}
 
   async create(createTaskDto: CreateTaskDto, userId: number): Promise<Task> {
-    const task = this.tasksRepository.create({
+    const task = this.taskRepository.create({
       ...createTaskDto,
-      user: { id: userId },
+      user: { id: userId }, // Associa a tarefa ao usuário
     });
-    return this.tasksRepository.save(task);
+    return this.taskRepository.save(task);
   }
 
   async findAll(userId: number): Promise<Task[]> {
-    return this.tasksRepository.find({ where: { user: { id: userId } } });
+    return this.taskRepository.find({ where: { user: { id: userId } } });
   }
 
   async findOne(id: number, userId: number): Promise<Task> {
-    const task = await this.tasksRepository.findOne({
+    const task = await this.taskRepository.findOne({
       where: { id, user: { id: userId } },
     });
     if (!task) {
-      throw new NotFoundException('Tarefa não encontrada');
+      throw new Error('Tarefa não encontrada');
     }
     return task;
   }
@@ -41,11 +41,11 @@ export class TasksService {
   ): Promise<Task> {
     const task = await this.findOne(id, userId);
     Object.assign(task, updateTaskDto);
-    return this.tasksRepository.save(task);
+    return this.taskRepository.save(task);
   }
 
   async remove(id: number, userId: number): Promise<void> {
     const task = await this.findOne(id, userId);
-    await this.tasksRepository.remove(task);
+    await this.taskRepository.remove(task);
   }
 }
