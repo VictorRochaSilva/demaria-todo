@@ -6,8 +6,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService, // Injeta o UsersService
-    private jwtService: JwtService, // Injeta o JwtService
+    private usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -23,6 +23,7 @@ export class AuthService {
     const user = await this.validateUser(loginDto.email, loginDto.password);
     const payload = { email: user.email, sub: user.id };
     return {
+      email: user.email,
       access_token: this.jwtService.sign(payload),
     };
   }

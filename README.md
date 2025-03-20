@@ -2,3 +2,15 @@
 Descrição
 Este projeto é um sistema de gerenciamento de tarefas (To-Do), ele inclui funcionalidades como autenticação de usuários, CRUD de tarefas, filtragem de tarefas por status e integração com um banco de dados PostgreSQL.
 
+#### Como rodar o projet:
+
+1 - Rode o comando 'npm install',
+
+2 - Vá do arquivo docker-compose-yml e escolha o nome do banco, senha e usuário.
+
+3 - Rode o comando 'docker compose up -d'
+
+4 - Copie o .enx.example com o comando 'copy .env.example .env ou cp .env.example .env'
+
+5 - Rode o comando 'npm start' e a api estará online.
+
